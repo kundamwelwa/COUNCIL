@@ -60,7 +60,7 @@ Main tables:
 - `grants_loans` – Financial support tracking
 - `audit_logs` – Security & admin activity tracking
 
-[See full schema here](./docs/database_schema.sql)
+[See full schema here](./database_schema.sql)
 
 ---
 
