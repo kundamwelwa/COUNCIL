@@ -58,7 +58,7 @@ router.get('/beneficiaries-by-program', async (req, res) => {
         p.program_name,
         COUNT(pp.person_id) as count
       FROM programs p
-      LEFT JOIN person_programs pp ON p.program_id = pp.person_id
+      LEFT JOIN person_programs pp ON p.program_id = pp.program_id
       GROUP BY p.program_id, p.program_name
       ORDER BY count DESC
     `);

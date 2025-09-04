@@ -7,12 +7,22 @@
     "dev": "concurrently \"npm run server\" \"npm run client\"",
     "server": "cd backend && npm run dev",
     "client": "cd frontend && npm start",
-    "install-all": "npm install && cd backend && npm install && cd ../frontend && npm install"
+    "install-all": "npm install && cd backend && npm install && cd ../frontend && npm install",
+    "setup": "node setup.js",
+    "migrate": "cd backend && npm run migrate"
   },
-  "keywords": ["council", "beneficiaries", "funds", "registration"],
+  "keywords": [
+    "council",
+    "beneficiaries",
+    "funds",
+    "registration"
+  ],
   "author": "Council Development Team",
   "license": "MIT",
   "devDependencies": {
     "concurrently": "^8.2.2"
+  },
+  "dependencies": {
+    "all": "^0.0.0"
   }
 }
