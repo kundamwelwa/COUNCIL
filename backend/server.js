@@ -18,7 +18,13 @@ app.use(cors({
 const limiter = rateLimit({
   windowMs: 15 * 60 * 1000, // 15 minutes
   max: 100, // limit each IP to 100 requests per windowMs
-  trustProxy: false // Disable trust proxy to avoid X-Forwarded-For header issues
+  trustProxy: false, // Disable trust proxy to avoid X-Forwarded-For header issues
+  standardHeaders: false, // Disable rate limit info in headers
+  legacyHeaders: false, // Disable X-RateLimit-* headers
+  keyGenerator: (req) => {
+    // Use IP address directly without checking X-Forwarded-For
+    return req.ip || req.connection.remoteAddress || 'unknown';
+  }
 });
 app.use(limiter);
 
@@ -27,12 +33,14 @@ app.use(express.json({ limit: '10mb' }));
 app.use(express.urlencoded({ extended: true }));
 
 // Routes
-app.use('/api/dashboard', require('./routes/dashboard'));
+app.use('/api/dashboard', require('./routes/dashboard_complete'));
 app.use('/api/persons', require('./routes/persons'));
 app.use('/api/programs', require('./routes/programs'));
 app.use('/api/groups', require('./routes/groups'));
 app.use('/api/loans', require('./routes/loans'));
-app.use('/api/auth', require('./routes/auth'));
+app.use('/api/auth', require('./routes/auth_complete'));
+app.use('/api/admin', require('./routes/admin'));
+app.use('/api/notifications', require('./routes/notifications'));
 
 // Health check endpoint
 app.get('/api/health', (req, res) => {

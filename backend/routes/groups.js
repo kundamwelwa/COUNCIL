@@ -1,9 +1,38 @@
 const express = require('express');
 const router = express.Router();
 const pool = require('../config/database');
+const jwt = require('jsonwebtoken');
+
+// Role-based access control middleware
+const requireRole = (allowedRoles) => {
+  return (req, res, next) => {
+    const token = req.headers.authorization?.split(' ')[1];
+    
+    if (!token) {
+      return res.status(401).json({ success: false, error: 'No token provided' });
+    }
+
+    try {
+      const decoded = jwt.verify(token, process.env.JWT_SECRET);
+      
+      if (!allowedRoles.includes(decoded.role)) {
+        return res.status(403).json({
+          success: false,
+          error: 'Access denied. Insufficient permissions.',
+          required_roles: allowedRoles,
+          user_role: decoded.role
+        });
+      }
+      req.user = decoded;
+      next();
+    } catch (error) {
+      return res.status(401).json({ success: false, error: 'Invalid token' });
+    }
+  };
+};
 
 // Get all groups
-router.get('/', async (req, res) => {
+router.get('/', requireRole(['SuperAdmin', 'Admin', 'DataEntry', 'Auditor']), async (req, res) => {
   try {
     const result = await pool.query(`
       SELECT 
@@ -28,7 +57,7 @@ router.get('/', async (req, res) => {
 });
 
 // Get group by ID
-router.get('/:id', async (req, res) => {
+router.get('/:id', requireRole(['SuperAdmin', 'Admin', 'DataEntry', 'Auditor']), async (req, res) => {
   try {
     const { id } = req.params;
     
@@ -62,7 +91,7 @@ router.get('/:id', async (req, res) => {
 });
 
 // Create new group
-router.post('/', async (req, res) => {
+router.post('/', requireRole(['SuperAdmin', 'Admin', 'DataEntry']), async (req, res) => {
   try {
     const { group_name, program_id, description } = req.body;
 
@@ -106,7 +135,7 @@ router.post('/', async (req, res) => {
 });
 
 // Update group
-router.put('/:id', async (req, res) => {
+router.put('/:id', requireRole(['SuperAdmin', 'Admin', 'DataEntry']), async (req, res) => {
   try {
     const { id } = req.params;
     const { group_name, program_id, description } = req.body;
@@ -146,7 +175,7 @@ router.put('/:id', async (req, res) => {
 });
 
 // Delete group
-router.delete('/:id', async (req, res) => {
+router.delete('/:id', requireRole(['SuperAdmin', 'Admin']), async (req, res) => {
   try {
     const { id } = req.params;
 

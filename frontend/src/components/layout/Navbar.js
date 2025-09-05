@@ -14,7 +14,10 @@ import {
   Search,
   BarChart3,
   UserCheck,
-  Building
+  Building,
+  Shield,
+  UserCog,
+  Activity
 } from 'lucide-react';
 
 const Navbar = () => {
@@ -32,13 +35,30 @@ const Navbar = () => {
   };
 
   const navigation = [
-    { name: 'Dashboard', href: '/dashboard', icon: BarChart3 },
-    { name: 'Beneficiaries', href: '/beneficiaries', icon: Users },
-    { name: 'Programs', href: '/programs', icon: Building },
-    { name: 'Groups', href: '/groups', icon: UserCheck },
-    { name: 'Loans & Grants', href: '/loans', icon: DollarSign },
-    { name: 'Reports', href: '/reports', icon: FileText },
+    { name: 'Dashboard', href: '/dashboard', icon: BarChart3, roles: ['DataEntry', 'Admin', 'SuperAdmin', 'Auditor'] },
+    { name: 'Beneficiaries', href: '/beneficiaries', icon: Users, roles: ['DataEntry', 'Admin', 'SuperAdmin'] },
+    { name: 'Programs', href: '/programs', icon: Building, roles: ['Admin', 'SuperAdmin'] },
+    { name: 'Groups', href: '/groups', icon: UserCheck, roles: ['DataEntry', 'Admin', 'SuperAdmin'] },
+    { name: 'Loans & Grants', href: '/loans', icon: DollarSign, roles: ['Admin', 'SuperAdmin'] },
+    { name: 'Reports', href: '/reports', icon: FileText, roles: ['DataEntry', 'Admin', 'SuperAdmin', 'Auditor'] },
+    { name: 'Notifications', href: '/notifications', icon: Bell, roles: ['DataEntry', 'Admin', 'SuperAdmin', 'Auditor'] },
   ];
+
+  const adminNavigation = [
+  { name: 'User Management', href: '/admin/users', icon: Users, roles: ['SuperAdmin'] },
+  { name: 'Permission Requests', href: '/admin/permissions', icon: Shield, roles: ['SuperAdmin'] },
+  { name: 'Audit Logs', href: '/admin/audit-logs', icon: FileText, roles: ['SuperAdmin'] },
+  { name: 'System Status', href: '/admin/system-status', icon: Activity, roles: ['SuperAdmin'] },
+];
+
+  // Filter navigation based on user role
+  const filteredNavigation = navigation.filter(item => 
+    item.roles.includes(user.role)
+  );
+
+  const filteredAdminNavigation = adminNavigation.filter(item => 
+    item.roles.includes(user.role)
+  );
 
   const isActive = (path) => location.pathname === path;
 
@@ -68,7 +88,7 @@ const Navbar = () => {
 
           {/* Desktop Navigation */}
           <div className="hidden lg:flex items-center space-x-1">
-            {navigation.map((item) => {
+            {filteredNavigation.map((item) => {
               const Icon = item.icon;
               return (
                 <Link
@@ -85,6 +105,30 @@ const Navbar = () => {
                 </Link>
               );
             })}
+            
+            {/* Admin Navigation */}
+            {filteredAdminNavigation.length > 0 && (
+              <>
+                <div className="w-px h-6 bg-neutral-300 mx-2"></div>
+                {filteredAdminNavigation.map((item) => {
+                  const Icon = item.icon;
+                  return (
+                    <Link
+                      key={item.name}
+                      to={item.href}
+                      className={`flex items-center space-x-2 px-3 py-2 rounded-lg text-sm font-medium transition-colors ${
+                        isActive(item.href)
+                          ? 'bg-accent-100 text-accent-700'
+                          : 'text-neutral-600 hover:text-neutral-900 hover:bg-neutral-100'
+                      }`}
+                    >
+                      <Icon className="w-4 h-4" />
+                      <span>{item.name}</span>
+                    </Link>
+                  );
+                })}
+              </>
+            )}
           </div>
 
           {/* Right side - Search, Notifications, User Menu */}
@@ -133,6 +177,16 @@ const Navbar = () => {
                     <User className="w-4 h-4" />
                     <span>Profile</span>
                   </Link>
+                  {user.role === 'SuperAdmin' && (
+                    <Link
+                      to="/admin/permissions"
+                      className="flex items-center space-x-2 px-4 py-2 text-sm text-neutral-700 hover:bg-neutral-100"
+                      onClick={() => setUserMenuOpen(false)}
+                    >
+                      <UserCog className="w-4 h-4" />
+                      <span>Admin Panel</span>
+                    </Link>
+                  )}
                   <Link
                     to="/settings"
                     className="flex items-center space-x-2 px-4 py-2 text-sm text-neutral-700 hover:bg-neutral-100"
@@ -159,7 +213,7 @@ const Navbar = () => {
         {isOpen && (
           <div className="lg:hidden">
             <div className="px-2 pt-2 pb-3 space-y-1 bg-white border-t border-neutral-200">
-              {navigation.map((item) => {
+              {filteredNavigation.map((item) => {
                 const Icon = item.icon;
                 return (
                   <Link
@@ -177,6 +231,32 @@ const Navbar = () => {
                   </Link>
                 );
               })}
+              
+              {/* Admin Navigation for Mobile */}
+              {filteredAdminNavigation.length > 0 && (
+                <>
+                  <div className="border-t border-neutral-200 my-2"></div>
+                  <div className="px-2 text-xs font-medium text-neutral-500 uppercase tracking-wider">Admin</div>
+                  {filteredAdminNavigation.map((item) => {
+                    const Icon = item.icon;
+                    return (
+                      <Link
+                        key={item.name}
+                        to={item.href}
+                        className={`flex items-center space-x-2 px-3 py-2 rounded-lg text-base font-medium transition-colors ${
+                          isActive(item.href)
+                            ? 'bg-accent-100 text-accent-700'
+                            : 'text-neutral-600 hover:text-neutral-900 hover:bg-neutral-100'
+                        }`}
+                        onClick={() => setIsOpen(false)}
+                      >
+                        <Icon className="w-5 h-5" />
+                        <span>{item.name}</span>
+                      </Link>
+                    );
+                  })}
+                </>
+              )}
             </div>
           </div>
         )}
