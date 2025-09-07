@@ -148,12 +148,12 @@ const Dashboard = () => {
   }, []);
 
   const StatCard = ({ title, value, icon: Icon, color, trend, trendValue, subtitle }) => (
-    <div className="bg-white rounded-xl shadow-lg border border-neutral-200 p-6 hover:shadow-xl transition-all duration-300">
+    <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg border border-neutral-200 dark:border-gray-700 p-6 hover:shadow-xl transition-all duration-300">
       <div className="flex items-center justify-between">
         <div className="flex-1">
-          <p className="text-neutral-600 text-sm font-medium mb-1">{title}</p>
-          <p className="text-3xl font-bold text-neutral-800 mb-2">{value.toLocaleString()}</p>
-          {subtitle && <p className="text-xs text-neutral-500">{subtitle}</p>}
+          <p className="text-neutral-600 dark:text-gray-400 text-sm font-medium mb-1">{title}</p>
+          <p className="text-3xl font-bold text-neutral-800 dark:text-white mb-2">{value.toLocaleString()}</p>
+          {subtitle && <p className="text-xs text-neutral-500 dark:text-gray-500">{subtitle}</p>}
           {trend && (
             <div className="flex items-center mt-2">
               {trend === 'up' ? (
@@ -164,7 +164,7 @@ const Dashboard = () => {
               <span className={`text-sm font-medium ${trend === 'up' ? 'text-primary-500' : 'text-accent-500'}`}>
                 {trendValue}%
               </span>
-              <span className="text-xs text-neutral-500 ml-1">vs last month</span>
+              <span className="text-xs text-neutral-500 dark:text-gray-500 ml-1">vs last month</span>
             </div>
           )}
         </div>
@@ -176,14 +176,14 @@ const Dashboard = () => {
   );
 
   const ChartCard = ({ title, children, className = "" }) => (
-    <div className={`bg-white rounded-xl shadow-lg border border-neutral-200 p-6 ${className}`}>
+    <div className={`bg-white dark:bg-gray-800 rounded-xl shadow-lg border border-neutral-200 dark:border-gray-700 p-6 ${className}`}>
       <div className="flex items-center justify-between mb-6">
-        <h3 className="text-lg font-semibold text-neutral-800">{title}</h3>
+        <h3 className="text-lg font-semibold text-neutral-800 dark:text-white">{title}</h3>
         <div className="flex space-x-2">
-          <button className="p-2 text-neutral-500 hover:text-neutral-700 hover:bg-neutral-100 rounded-lg transition-colors">
+          <button className="p-2 text-neutral-500 dark:text-gray-400 hover:text-neutral-700 dark:hover:text-gray-300 hover:bg-neutral-100 dark:hover:bg-gray-700 rounded-lg transition-colors">
             <Download className="w-4 h-4" />
           </button>
-          <button className="p-2 text-neutral-500 hover:text-neutral-700 hover:bg-neutral-100 rounded-lg transition-colors">
+          <button className="p-2 text-neutral-500 dark:text-gray-400 hover:text-neutral-700 dark:hover:text-gray-300 hover:bg-neutral-100 dark:hover:bg-gray-700 rounded-lg transition-colors">
             <RefreshCw className="w-4 h-4" />
           </button>
         </div>
@@ -194,10 +194,10 @@ const Dashboard = () => {
 
   if (loading) {
     return (
-      <div className="min-h-screen bg-neutral-50 flex items-center justify-center">
+      <div className="min-h-screen bg-neutral-50 dark:bg-gray-900 flex items-center justify-center">
         <div className="text-center">
           <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary-500 mx-auto mb-4"></div>
-          <p className="text-neutral-600">Loading dashboard...</p>
+          <p className="text-neutral-600 dark:text-gray-400">Loading dashboard...</p>
         </div>
       </div>
     );
@@ -205,11 +205,11 @@ const Dashboard = () => {
 
   if (error) {
     return (
-      <div className="min-h-screen bg-neutral-50 flex items-center justify-center">
+      <div className="min-h-screen bg-neutral-50 dark:bg-gray-900 flex items-center justify-center">
         <div className="text-center">
           <AlertCircle className="w-12 h-12 text-accent-500 mx-auto mb-4" />
-          <h3 className="text-lg font-medium text-neutral-800 mb-2">Error Loading Dashboard</h3>
-          <p className="text-neutral-600 mb-4">{error}</p>
+          <h3 className="text-lg font-medium text-neutral-800 dark:text-white mb-2">Error Loading Dashboard</h3>
+          <p className="text-neutral-600 dark:text-gray-400 mb-4">{error}</p>
           <button
             onClick={fetchDashboardData}
             className="px-4 py-2 bg-primary-500 text-white rounded-lg hover:bg-primary-600 transition-colors"
@@ -222,7 +222,7 @@ const Dashboard = () => {
   }
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-6 dark:text-white">
       {/* Header */}
       <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center space-y-4 sm:space-y-0">
         <div className="flex items-center space-x-4">
@@ -231,8 +231,8 @@ const Dashboard = () => {
               <Building2 className="w-5 h-5 text-white" />
             </div>
             <div>
-              <h1 className="text-lg sm:text-xl font-bold text-neutral-800">Council Management System</h1>
-              <p className="text-xs sm:text-sm text-neutral-500">Beneficiaries & Fund Management</p>
+              <h1 className="text-lg sm:text-xl font-bold text-neutral-800 dark:text-white">Council Management System</h1>
+              <p className="text-xs sm:text-sm text-neutral-500 dark:text-gray-400">Beneficiaries & Fund Management</p>
             </div>
           </div>
         </div>

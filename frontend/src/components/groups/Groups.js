@@ -122,12 +122,12 @@ const Groups = () => {
   }
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-6 dark:text-white">
       {/* Header */}
       <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between">
         <div>
-          <h1 className="text-2xl font-bold text-neutral-800">Groups & Cooperatives</h1>
-          <p className="text-neutral-600">Manage cooperatives, clubs, and community groups</p>
+          <h1 className="text-2xl font-bold text-neutral-800 dark:text-white">Groups & Cooperatives</h1>
+          <p className="text-neutral-600 dark:text-gray-400">Manage cooperatives, clubs, and community groups</p>
         </div>
         <button
           onClick={() => setShowModal(true)}
@@ -232,14 +232,23 @@ const Groups = () => {
               </div>
               <div className="flex space-x-1">
                 <button
+                  onClick={() => {/* View group details */}}
+                  className="p-2 text-neutral-400 hover:text-blue-600 rounded-lg hover:bg-blue-50 transition-colors"
+                  title="View Details"
+                >
+                  <Eye className="w-4 h-4" />
+                </button>
+                <button
                   onClick={() => handleEdit(group)}
                   className="p-2 text-neutral-400 hover:text-primary-600 rounded-lg hover:bg-primary-50 transition-colors"
+                  title="Edit"
                 >
                   <Edit className="w-4 h-4" />
                 </button>
                 <button
                   onClick={() => handleDelete(group.group_id)}
                   className="p-2 text-neutral-400 hover:text-accent-600 rounded-lg hover:bg-accent-50 transition-colors"
+                  title="Delete"
                 >
                   <Trash2 className="w-4 h-4" />
                 </button>

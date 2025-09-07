@@ -90,6 +90,7 @@ const Reports = () => {
     { id: 'beneficiaries', name: 'Beneficiaries Report', icon: Users },
     { id: 'programs', name: 'Programs Report', icon: Building },
     { id: 'financial', name: 'Financial Report', icon: DollarSign },
+    { id: 'distribution', name: 'Distribution Analysis', icon: PieChartIcon },
     { id: 'trends', name: 'Trends Analysis', icon: TrendingUp }
   ];
 
@@ -104,12 +105,12 @@ const Reports = () => {
   }
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-6 dark:text-white">
       {/* Header */}
       <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between">
         <div>
-          <h1 className="text-2xl font-bold text-neutral-800">Reports & Analytics</h1>
-          <p className="text-neutral-600">Generate comprehensive reports and analytics</p>
+          <h1 className="text-2xl font-bold text-neutral-800 dark:text-white">Reports & Analytics</h1>
+          <p className="text-neutral-600 dark:text-gray-400">Generate comprehensive reports and analytics</p>
         </div>
         <div className="flex space-x-2 mt-4 sm:mt-0">
           <button
@@ -129,9 +130,20 @@ const Reports = () => {
         </div>
       </div>
 
-      {/* Report Type Selection */}
+      {/* Date Range and Report Type Selection */}
       <div className="bg-white rounded-xl shadow-lg border border-neutral-200 p-6">
-        <h3 className="text-lg font-semibold text-neutral-800 mb-4">Select Report Type</h3>
+        <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between mb-4">
+          <h3 className="text-lg font-semibold text-neutral-800 mb-2 sm:mb-0">Select Report Type</h3>
+          <div className="flex items-center space-x-2">
+            <Calendar className="w-4 h-4 text-neutral-500" />
+            <select className="px-3 py-2 border border-neutral-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent">
+              <option>Last 30 days</option>
+              <option>Last 3 months</option>
+              <option>Last 6 months</option>
+              <option>Last year</option>
+            </select>
+          </div>
+        </div>
         <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-5 gap-4">
           {reportTypes.map((report) => {
             const Icon = report.icon;
@@ -314,7 +326,107 @@ const Reports = () => {
                 </div>
               </div>
             </div>
+
+            {/* Trend Analysis Chart */}
+            <div className="bg-white rounded-xl shadow-lg border border-neutral-200 p-6">
+              <h3 className="text-lg font-semibold text-neutral-800 mb-4">Performance Trends</h3>
+              <ResponsiveContainer width="100%" height={300}>
+                <LineChart data={reportData.monthlyTrends}>
+                  <CartesianGrid strokeDasharray="3 3" stroke="#e2e8f0" />
+                  <XAxis dataKey="month" stroke="#64748b" fontSize={12} />
+                  <YAxis stroke="#64748b" fontSize={12} />
+                  <Tooltip 
+                    contentStyle={{ 
+                      backgroundColor: 'white', 
+                      border: '1px solid #e2e8f0',
+                      borderRadius: '8px',
+                      boxShadow: '0 4px 6px -1px rgba(0, 0, 0, 0.1)'
+                    }} 
+                  />
+                  <Line 
+                    type="monotone" 
+                    dataKey="beneficiaries" 
+                    stroke="#3b82f6" 
+                    strokeWidth={3}
+                    dot={{ fill: '#3b82f6', strokeWidth: 2, r: 4 }}
+                    activeDot={{ r: 6, stroke: '#3b82f6', strokeWidth: 2 }}
+                  />
+                  <Line 
+                    type="monotone" 
+                    dataKey="loans" 
+                    stroke="#10b981" 
+                    strokeWidth={3}
+                    dot={{ fill: '#10b981', strokeWidth: 2, r: 4 }}
+                    activeDot={{ r: 6, stroke: '#10b981', strokeWidth: 2 }}
+                  />
+                </LineChart>
+              </ResponsiveContainer>
+            </div>
           </>
+        )}
+
+        {selectedReport === 'distribution' && (
+          <div className="bg-white rounded-xl shadow-lg border border-neutral-200 p-6">
+            <h3 className="text-lg font-semibold text-neutral-800 mb-4">Distribution Analysis</h3>
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+              <div>
+                <h4 className="text-md font-medium text-neutral-700 mb-3">Program Distribution</h4>
+                <ResponsiveContainer width="100%" height={250}>
+                  <RechartsPieChart>
+                    <Pie
+                      data={reportData.programDistribution}
+                      cx="50%"
+                      cy="50%"
+                      innerRadius={40}
+                      outerRadius={80}
+                      paddingAngle={5}
+                      dataKey="count"
+                    >
+                      {reportData.programDistribution.map((entry, index) => (
+                        <Cell key={`cell-${index}`} fill={chartColors[index % chartColors.length]} />
+                      ))}
+                    </Pie>
+                    <Tooltip 
+                      contentStyle={{ 
+                        backgroundColor: 'white', 
+                        border: '1px solid #e2e8f0',
+                        borderRadius: '8px',
+                        boxShadow: '0 4px 6px -1px rgba(0, 0, 0, 0.1)'
+                      }} 
+                    />
+                  </RechartsPieChart>
+                </ResponsiveContainer>
+              </div>
+              <div>
+                <h4 className="text-md font-medium text-neutral-700 mb-3">Gender Distribution</h4>
+                <ResponsiveContainer width="100%" height={250}>
+                  <RechartsPieChart>
+                    <Pie
+                      data={reportData.genderDistribution}
+                      cx="50%"
+                      cy="50%"
+                      innerRadius={40}
+                      outerRadius={80}
+                      paddingAngle={5}
+                      dataKey="count"
+                    >
+                      {reportData.genderDistribution.map((entry, index) => (
+                        <Cell key={`cell-${index}`} fill={chartColors[index % chartColors.length]} />
+                      ))}
+                    </Pie>
+                    <Tooltip 
+                      contentStyle={{ 
+                        backgroundColor: 'white', 
+                        border: '1px solid #e2e8f0',
+                        borderRadius: '8px',
+                        boxShadow: '0 4px 6px -1px rgba(0, 0, 0, 0.1)'
+                      }} 
+                    />
+                  </RechartsPieChart>
+                </ResponsiveContainer>
+              </div>
+            </div>
+          </div>
         )}
 
         {selectedReport === 'trends' && (

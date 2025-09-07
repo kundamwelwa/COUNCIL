@@ -169,12 +169,12 @@ const Loans = () => {
   }
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-6 dark:text-white">
       {/* Header */}
       <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between">
         <div>
-          <h1 className="text-2xl font-bold text-neutral-800">Loans & Grants</h1>
-          <p className="text-neutral-600">Manage financial support for groups and cooperatives</p>
+          <h1 className="text-2xl font-bold text-neutral-800 dark:text-white">Loans & Grants</h1>
+          <p className="text-neutral-600 dark:text-gray-400">Manage financial support for groups and cooperatives</p>
         </div>
         <button
           onClick={() => setShowModal(true)}
@@ -324,6 +324,15 @@ const Loans = () => {
                     <div className="text-sm font-medium text-neutral-900">
                       ZMW {parseFloat(loan.amount).toLocaleString()}
                     </div>
+                    <div className="flex items-center text-xs text-neutral-500 mt-1">
+                      {loan.repayment_status === 'Repaid' ? (
+                        <TrendingUp className="w-3 h-3 mr-1 text-green-500" />
+                      ) : loan.repayment_status === 'Defaulted' ? (
+                        <TrendingDown className="w-3 h-3 mr-1 text-red-500" />
+                      ) : null}
+                      {loan.repayment_status === 'Repaid' ? 'Good Performance' : 
+                       loan.repayment_status === 'Defaulted' ? 'Needs Attention' : 'In Progress'}
+                    </div>
                   </td>
                   <td className="px-6 py-4 whitespace-nowrap">
                     <span className={`inline-flex items-center px-2 py-1 rounded-full text-xs font-medium ${getStatusColor(loan.repayment_status)}`}>
@@ -340,14 +349,23 @@ const Loans = () => {
                   <td className="px-6 py-4 whitespace-nowrap text-sm font-medium">
                     <div className="flex space-x-2">
                       <button
+                        onClick={() => {/* View loan details */}}
+                        className="text-blue-600 hover:text-blue-900 p-1 rounded"
+                        title="View Details"
+                      >
+                        <Eye className="w-4 h-4" />
+                      </button>
+                      <button
                         onClick={() => handleEdit(loan)}
                         className="text-primary-600 hover:text-primary-900 p-1 rounded"
+                        title="Edit"
                       >
                         <Edit className="w-4 h-4" />
                       </button>
                       <button
                         onClick={() => handleDelete(loan.grant_loan_id)}
                         className="text-accent-600 hover:text-accent-900 p-1 rounded"
+                        title="Delete"
                       >
                         <Trash2 className="w-4 h-4" />
                       </button>

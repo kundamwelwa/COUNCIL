@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { Search, Bell, Settings } from 'lucide-react';
 import Sidebar from './Sidebar';
 import GlobalSearch from '../common/GlobalSearch';
+import ThemeToggle from '../common/ThemeToggle';
 
 const MainLayout = ({ children }) => {
   const [isCollapsed, setIsCollapsed] = useState(false);
@@ -61,7 +62,7 @@ const MainLayout = ({ children }) => {
   }, []);
 
   return (
-    <div className="flex h-screen bg-gray-50">
+    <div className="flex h-screen bg-gray-50 dark:bg-gray-900">
       {/* Sidebar */}
       <Sidebar 
         isCollapsed={isCollapsed} 
@@ -72,7 +73,7 @@ const MainLayout = ({ children }) => {
       {/* Main Content */}
       <div className="flex-1 flex flex-col overflow-hidden">
         {/* Top Bar */}
-        <header className="bg-gradient-to-r from-green-600 via-red-600 to-black shadow-lg border-b border-white/20 px-6 py-4">
+        <header className="bg-gradient-to-r from-gray-700 via-gray-600 to-gray-800 shadow-lg border-b border-white/20 px-6 py-4">
           <div className="flex items-center justify-between">
             <div>
               <h1 className="text-2xl font-semibold text-white">
@@ -113,6 +114,9 @@ const MainLayout = ({ children }) => {
                 </button>
               </div>
 
+              {/* Theme Toggle */}
+              <ThemeToggle />
+
               {/* Settings */}
               <button className="p-2 text-white hover:text-white hover:bg-white/10 rounded-lg transition-colors">
                 <Settings className="w-5 h-5" />
@@ -122,7 +126,7 @@ const MainLayout = ({ children }) => {
         </header>
 
         {/* Page Content */}
-        <main className="flex-1 overflow-y-auto bg-gray-50">
+        <main className="flex-1 overflow-y-auto bg-gray-50 dark:bg-gray-900">
           <div className="p-6">
             {children}
           </div>

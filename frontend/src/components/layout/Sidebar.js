@@ -65,6 +65,12 @@ const Sidebar = ({ isCollapsed, toggleCollapse, user }) => {
       href: '/notifications',
       icon: Bell,
       roles: ['SuperAdmin', 'Admin', 'DataEntry', 'Auditor']
+    },
+    {
+      name: 'Settings',
+      href: '/settings',
+      icon: Settings,
+      roles: ['SuperAdmin', 'Admin', 'DataEntry', 'Auditor']
     }
   ];
 
@@ -118,15 +124,15 @@ const Sidebar = ({ isCollapsed, toggleCollapse, user }) => {
   );
 
   return (
-    <div className={`bg-gradient-to-b from-green-600 via-red-600 to-black text-white transition-all duration-300 ${
+    <div className={`bg-gradient-to-b from-gray-700 via-gray-600 to-gray-800 text-white transition-all duration-300 ${
       isCollapsed ? 'w-16' : 'w-64'
     } h-screen flex flex-col shadow-xl`}>
       {/* Header */}
-      <div className="p-4 border-b border-white/20">
+      <div className="p-4 border-b border-white/20 rounded-tr-2xl">
         <div className="flex items-center justify-between">
           {!isCollapsed && (
             <div className="flex items-center space-x-3">
-              <div className="w-8 h-8 bg-orange-500 rounded-lg flex items-center justify-center">
+              <div className="w-8 h-8 bg-blue-500 rounded-lg flex items-center justify-center">
                 <Building2 className="w-5 h-5 text-white" />
               </div>
               <div>
@@ -153,13 +159,13 @@ const Sidebar = ({ isCollapsed, toggleCollapse, user }) => {
         <div className="p-4 border-b border-white/20">
           <form onSubmit={handleSearch} className="relative">
             <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 w-4 h-4 text-white/60" />
-            <input
-              type="text"
-              placeholder="Search..."
-              value={searchQuery}
-              onChange={(e) => setSearchQuery(e.target.value)}
-              className="w-full pl-10 pr-4 py-2 bg-white/10 border border-white/20 rounded-lg text-white placeholder-white/60 focus:outline-none focus:ring-2 focus:ring-orange-500 focus:border-transparent"
-            />
+                  <input
+                    type="text"
+                    placeholder="Search..."
+                    value={searchQuery}
+                    onChange={(e) => setSearchQuery(e.target.value)}
+                    className="w-full pl-10 pr-4 py-2 bg-white/10 border border-white/20 rounded-lg text-white placeholder-white/60 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                  />
           </form>
         </div>
       )}
@@ -172,15 +178,15 @@ const Sidebar = ({ isCollapsed, toggleCollapse, user }) => {
             {filteredNavItems.map((item) => {
               const Icon = item.icon;
               return (
-                <Link
-                  key={item.name}
-                  to={item.href}
-                  className={`flex items-center space-x-3 px-3 py-2 rounded-lg transition-colors group ${
-                    isActive(item.href)
-                      ? 'bg-orange-500 text-white shadow-lg'
-                      : 'text-white/80 hover:bg-white/10 hover:text-white'
-                  }`}
-                >
+            <Link
+              key={item.name}
+              to={item.href}
+              className={`flex items-center space-x-3 px-3 py-2 rounded-lg transition-colors group ${
+                isActive(item.href)
+                  ? 'bg-blue-500 text-white shadow-lg'
+                  : 'text-white/80 hover:bg-white/10 hover:text-white'
+              }`}
+            >
                   <Icon className="w-5 h-5 flex-shrink-0" />
                   {!isCollapsed && (
                     <span className="font-medium">{item.name}</span>
@@ -231,10 +237,10 @@ const Sidebar = ({ isCollapsed, toggleCollapse, user }) => {
         {!isCollapsed ? (
           <div className="space-y-3">
             {/* User Info */}
-            <div className="flex items-center space-x-3 p-2 rounded-lg bg-white/10">
-              <div className="w-8 h-8 bg-orange-500 rounded-full flex items-center justify-center">
-                <User className="w-4 h-4 text-white" />
-              </div>
+                  <div className="flex items-center space-x-3 p-2 rounded-lg bg-white/10">
+                    <div className="w-8 h-8 bg-blue-500 rounded-full flex items-center justify-center">
+                      <User className="w-4 h-4 text-white" />
+                    </div>
               <div className="flex-1 min-w-0">
                 <p className="text-sm font-medium text-white truncate">
                   {user?.username || 'User'}
@@ -255,10 +261,10 @@ const Sidebar = ({ isCollapsed, toggleCollapse, user }) => {
             </button>
           </div>
         ) : (
-          <div className="space-y-2">
-            <div className="w-8 h-8 bg-orange-500 rounded-full flex items-center justify-center mx-auto">
-              <User className="w-4 h-4 text-white" />
-            </div>
+                <div className="space-y-2">
+                  <div className="w-8 h-8 bg-blue-500 rounded-full flex items-center justify-center mx-auto">
+                    <User className="w-4 h-4 text-white" />
+                  </div>
             <button
               onClick={handleLogout}
               className="w-full flex items-center justify-center p-2 text-white/80 hover:bg-red-500 hover:text-white rounded-lg transition-colors"

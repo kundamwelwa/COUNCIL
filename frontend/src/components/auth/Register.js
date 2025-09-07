@@ -201,24 +201,54 @@ const Register = () => {
               </div>
 
               <div>
-                <label htmlFor="role" className="block text-sm font-medium text-neutral-700 mb-2">
+                <label className="block text-sm font-medium text-neutral-700 mb-2">
                   Role
                 </label>
-                <select
-                  id="role"
-                  name="role"
-                  required
-                  value={formData.role}
-                  onChange={handleChange}
-                  className="w-full px-4 py-3 sm:py-4 border border-neutral-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent transition-colors text-sm sm:text-base"
-                >
-                  <option value="">Select your role</option>
-                  {roles.map((role) => (
-                    <option key={role.value} value={role.value}>
-                      {role.label}
-                    </option>
-                  ))}
-                </select>
+                <div className="grid grid-cols-2 gap-3">
+                  {roles.map((role) => {
+                    const Icon = role.icon;
+                    const isSelected = formData.role === role.value;
+                    return (
+                      <button
+                        key={role.value}
+                        type="button"
+                        onClick={() => setFormData({...formData, role: role.value})}
+                        className={`p-4 rounded-lg border-2 transition-all duration-200 text-left ${
+                          isSelected
+                            ? 'border-primary-500 bg-primary-50 shadow-md'
+                            : 'border-neutral-200 hover:border-primary-300 hover:bg-neutral-50'
+                        }`}
+                      >
+                        <div className="flex items-center space-x-3">
+                          <div className={`w-8 h-8 rounded-lg flex items-center justify-center ${
+                            isSelected ? 'bg-primary-500' : 'bg-neutral-100'
+                          }`}>
+                            <Icon className={`w-4 h-4 ${isSelected ? 'text-white' : role.color}`} />
+                          </div>
+                          <div>
+                            <p className={`text-sm font-medium ${
+                              isSelected ? 'text-primary-700' : 'text-neutral-700'
+                            }`}>
+                              {role.label}
+                            </p>
+                            <p className={`text-xs ${
+                              isSelected ? 'text-primary-600' : 'text-neutral-500'
+                            }`}>
+                              {role.value}
+                            </p>
+                          </div>
+                        </div>
+                      </button>
+                    );
+                  })}
+                </div>
+                {formData.role && (
+                  <div className="mt-3 p-3 bg-primary-50 border border-primary-200 rounded-lg">
+                    <p className="text-sm text-primary-700">
+                      <strong>Selected:</strong> {roles.find(r => r.value === formData.role)?.label}
+                    </p>
+                  </div>
+                )}
               </div>
 
               <div>

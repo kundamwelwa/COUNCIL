@@ -6,20 +6,13 @@ import axios from 'axios';
 const Login = () => {
   const [formData, setFormData] = useState({
     username: '',
-    password: '',
-    role: ''
+    password: ''
   });
   const [showPassword, setShowPassword] = useState(false);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
   const navigate = useNavigate();
 
-  const roles = [
-    { value: 'SuperAdmin', label: 'Super Administrator', icon: Shield, color: 'text-red-600' },
-    { value: 'Admin', label: 'Administrator', icon: Building2, color: 'text-blue-600' },
-    { value: 'DataEntry', label: 'Data Entry', icon: Users, color: 'text-green-600' },
-    { value: 'Auditor', label: 'Auditor', icon: FileText, color: 'text-purple-600' }
-  ];
 
   const handleChange = (e) => {
     setFormData({
@@ -196,26 +189,6 @@ const Login = () => {
                 </div>
               </div>
 
-              <div>
-                <label htmlFor="role" className="block text-sm font-medium text-neutral-700 mb-2">
-                  Role
-                </label>
-                <select
-                  id="role"
-                  name="role"
-                  required
-                  value={formData.role}
-                  onChange={handleChange}
-                  className="w-full px-4 py-3 sm:py-4 border border-neutral-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent transition-colors text-sm sm:text-base"
-                >
-                  <option value="">Select your role</option>
-                  {roles.map((role) => (
-                    <option key={role.value} value={role.value}>
-                      {role.label}
-                    </option>
-                  ))}
-                </select>
-              </div>
 
               <div className="flex items-center justify-between">
                 <div className="flex items-center">
@@ -230,9 +203,9 @@ const Login = () => {
                   </label>
                 </div>
                 <div className="text-sm">
-                  <button type="button" className="font-medium text-primary-600 hover:text-primary-500">
+                  <Link to="/forgot-password" className="font-medium text-primary-600 hover:text-primary-500">
                     Forgot password?
-                  </button>
+                  </Link>
                 </div>
               </div>
 

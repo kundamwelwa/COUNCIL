@@ -1,11 +1,13 @@
 import React from 'react';
 import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
+import { ThemeProvider } from './contexts/ThemeContext';
 import Dashboard from './components/Dashboard';
 import Login from './components/auth/Login';
 import Register from './components/auth/Register';
 import Unauthorized from './components/auth/Unauthorized';
 import EmailVerification from './components/auth/EmailVerification';
 import PasswordReset from './components/auth/PasswordReset';
+import ForgotPassword from './components/auth/ForgotPassword';
 import MainLayout from './components/layout/MainLayout';
 import Beneficiaries from './components/beneficiaries/Beneficiaries';
 import Programs from './components/programs/Programs';
@@ -47,12 +49,14 @@ const Layout = ({ children }) => (
 
 function App() {
   return (
-    <Router>
-      <div className="App">
-        <Routes>
+    <ThemeProvider>
+      <Router>
+        <div className="App">
+          <Routes>
           {/* Public Routes */}
           <Route path="/login" element={<Login />} />
           <Route path="/register" element={<Register />} />
+          <Route path="/forgot-password" element={<ForgotPassword />} />
           <Route path="/verify-email" element={<EmailVerification />} />
           <Route path="/reset-password" element={<PasswordReset />} />
           <Route path="/unauthorized" element={<Unauthorized />} />
@@ -218,6 +222,7 @@ function App() {
         </Routes>
       </div>
     </Router>
+    </ThemeProvider>
   );
 }
 

@@ -8,7 +8,6 @@ import {
   Eye, 
   Download, 
   Users,
-  UserPlus,
   Calendar,
   MapPin,
   Phone,
@@ -126,18 +125,18 @@ const Beneficiaries = () => {
   }
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-6 dark:text-white">
       {/* Header */}
       <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between">
         <div>
-          <h1 className="text-2xl font-bold text-neutral-800">Beneficiaries</h1>
-          <p className="text-neutral-600">Manage registered beneficiaries and their information</p>
+          <h1 className="text-2xl font-bold text-neutral-800 dark:text-white">Beneficiaries</h1>
+          <p className="text-neutral-600 dark:text-gray-400">Manage registered beneficiaries and their information</p>
         </div>
         <button
           onClick={() => setShowModal(true)}
           className="mt-4 sm:mt-0 flex items-center space-x-2 bg-primary-500 hover:bg-primary-600 text-white px-4 py-2 rounded-lg transition-colors"
         >
-          <UserPlus className="w-5 h-5" />
+          <Plus className="w-5 h-5" />
           <span>Add Beneficiary</span>
         </button>
       </div>
@@ -266,9 +265,12 @@ const Beneficiaries = () => {
                         <div className="text-sm font-medium text-neutral-900">
                           {beneficiary.first_name} {beneficiary.last_name}
                         </div>
-                        <div className="text-sm text-neutral-500">
-                          {beneficiary.address}
-                        </div>
+                        {beneficiary.address && (
+                          <div className="text-sm text-neutral-500 flex items-center">
+                            <MapPin className="w-3 h-3 mr-1" />
+                            {beneficiary.address}
+                          </div>
+                        )}
                       </div>
                     </div>
                   </td>
@@ -295,6 +297,12 @@ const Beneficiaries = () => {
                           {beneficiary.phone_number}
                         </div>
                       )}
+                      {beneficiary.email && (
+                        <div className="flex items-center mt-1">
+                          <Mail className="w-4 h-4 mr-2 text-neutral-400" />
+                          {beneficiary.email}
+                        </div>
+                      )}
                     </div>
                   </td>
                   <td className="px-6 py-4 whitespace-nowrap">
@@ -305,14 +313,23 @@ const Beneficiaries = () => {
                   <td className="px-6 py-4 whitespace-nowrap text-sm font-medium">
                     <div className="flex space-x-2">
                       <button
+                        onClick={() => {/* View beneficiary details */}}
+                        className="text-blue-600 hover:text-blue-900 p-1 rounded"
+                        title="View Details"
+                      >
+                        <Eye className="w-4 h-4" />
+                      </button>
+                      <button
                         onClick={() => handleEdit(beneficiary)}
                         className="text-primary-600 hover:text-primary-900 p-1 rounded"
+                        title="Edit"
                       >
                         <Edit className="w-4 h-4" />
                       </button>
                       <button
                         onClick={() => handleDelete(beneficiary.person_id)}
                         className="text-accent-600 hover:text-accent-900 p-1 rounded"
+                        title="Delete"
                       >
                         <Trash2 className="w-4 h-4" />
                       </button>

@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { 
   User, 
   Bell, 
@@ -57,11 +57,7 @@ const Settings = () => {
     currency: 'ZMW'
   });
 
-  useEffect(() => {
-    fetchUserProfile();
-  }, []);
-
-  const fetchUserProfile = async () => {
+  const fetchUserProfile = useCallback(async () => {
     try {
       const token = localStorage.getItem('token');
       const response = await axios.get('http://localhost:5000/api/auth/profile', {
@@ -82,7 +78,11 @@ const Settings = () => {
       console.error('Error fetching profile:', error);
       showMessage('error', 'Failed to load profile data');
     }
-  };
+  }, []);
+
+  useEffect(() => {
+    fetchUserProfile();
+  }, [fetchUserProfile]);
 
   const showMessage = (type, text) => {
     setMessage({ type, text });
@@ -185,12 +185,12 @@ const Settings = () => {
   ];
 
   return (
-    <div className="min-h-screen bg-gray-50">
+    <div className="min-h-screen bg-gray-50 dark:bg-gray-900">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         {/* Header */}
         <div className="mb-8">
-          <h1 className="text-3xl font-bold text-gray-900">Settings</h1>
-          <p className="text-gray-600 mt-2">Manage your account settings and preferences</p>
+          <h1 className="text-3xl font-bold text-gray-900 dark:text-white">Settings</h1>
+          <p className="text-gray-600 dark:text-gray-400 mt-2">Manage your account settings and preferences</p>
         </div>
 
         {/* Message */}
@@ -247,6 +247,23 @@ const Settings = () => {
                 <div className="p-6">
                   <h2 className="text-xl font-semibold text-gray-900 mb-6">Profile Information</h2>
                   
+                  {user && (
+                    <div className="bg-gray-50 rounded-lg p-4 mb-6">
+                      <div className="flex items-center space-x-3">
+                        <div className="w-12 h-12 bg-primary-500 rounded-full flex items-center justify-center">
+                          <span className="text-white font-semibold text-lg">
+                            {user.username?.charAt(0).toUpperCase()}
+                          </span>
+                        </div>
+                        <div>
+                          <h3 className="text-lg font-medium text-gray-900">{user.username}</h3>
+                          <p className="text-sm text-gray-500">{user.role} • {user.department || 'No department'}</p>
+                          <p className="text-xs text-gray-400">Member since {new Date(user.created_at).toLocaleDateString()}</p>
+                        </div>
+                      </div>
+                    </div>
+                  )}
+                  
                   <form onSubmit={handleProfileUpdate} className="space-y-6">
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                       <div>
@@ -266,13 +283,16 @@ const Settings = () => {
                         <label className="block text-sm font-medium text-gray-700 mb-2">
                           Email
                         </label>
-                        <input
-                          type="email"
-                          value={profileForm.email}
-                          onChange={(e) => setProfileForm({...profileForm, email: e.target.value})}
-                          className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent"
-                          required
-                        />
+                        <div className="relative">
+                          <Mail className="w-5 h-5 absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400" />
+                          <input
+                            type="email"
+                            value={profileForm.email}
+                            onChange={(e) => setProfileForm({...profileForm, email: e.target.value})}
+                            className="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent"
+                            required
+                          />
+                        </div>
                       </div>
                       
                       <div>
@@ -291,12 +311,15 @@ const Settings = () => {
                         <label className="block text-sm font-medium text-gray-700 mb-2">
                           Department
                         </label>
-                        <input
-                          type="text"
-                          value={profileForm.department}
-                          onChange={(e) => setProfileForm({...profileForm, department: e.target.value})}
-                          className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent"
-                        />
+                        <div className="relative">
+                          <Globe className="w-5 h-5 absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400" />
+                          <input
+                            type="text"
+                            value={profileForm.department}
+                            onChange={(e) => setProfileForm({...profileForm, department: e.target.value})}
+                            className="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent"
+                          />
+                        </div>
                       </div>
                     </div>
                     
@@ -512,7 +535,10 @@ const Settings = () => {
               {/* System Tab */}
               {activeTab === 'system' && (
                 <div className="p-6">
-                  <h2 className="text-xl font-semibold text-gray-900 mb-6">System Preferences</h2>
+                  <div className="flex items-center space-x-2 mb-6">
+                    <h2 className="text-xl font-semibold text-gray-900">System Preferences</h2>
+                    <Info className="w-5 h-5 text-gray-400" title="Configure system-wide settings and preferences" />
+                  </div>
                   
                   <div className="space-y-6">
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
@@ -520,15 +546,18 @@ const Settings = () => {
                         <label className="block text-sm font-medium text-gray-700 mb-2">
                           Theme
                         </label>
-                        <select
-                          value={systemSettings.theme}
-                          onChange={(e) => setSystemSettings({...systemSettings, theme: e.target.value})}
-                          className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent"
-                        >
-                          <option value="light">Light</option>
-                          <option value="dark">Dark</option>
-                          <option value="auto">Auto</option>
-                        </select>
+                        <div className="relative">
+                          <Palette className="w-5 h-5 absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400" />
+                          <select
+                            value={systemSettings.theme}
+                            onChange={(e) => setSystemSettings({...systemSettings, theme: e.target.value})}
+                            className="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent"
+                          >
+                            <option value="light">Light</option>
+                            <option value="dark">Dark</option>
+                            <option value="auto">Auto</option>
+                          </select>
+                        </div>
                       </div>
                       
                       <div>
