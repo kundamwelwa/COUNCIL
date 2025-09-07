@@ -6,7 +6,7 @@ const pool = new Pool({
   port: process.env.DB_PORT || 5432,
   database: process.env.DB_NAME || 'beneficiaries_db',
   user: process.env.DB_USER || 'postgres',
-  password: process.env.DB_PASSWORD || 'Kellycoding%40100%23100%',
+  password: process.env.DB_PASSWORD || 'Council@2025',
   max: 20,
   idleTimeoutMillis: 30000,
   connectionTimeoutMillis: 2000,

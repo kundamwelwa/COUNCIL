@@ -4,7 +4,9 @@ import Dashboard from './components/Dashboard';
 import Login from './components/auth/Login';
 import Register from './components/auth/Register';
 import Unauthorized from './components/auth/Unauthorized';
-import Navbar from './components/layout/Navbar';
+import EmailVerification from './components/auth/EmailVerification';
+import PasswordReset from './components/auth/PasswordReset';
+import MainLayout from './components/layout/MainLayout';
 import Beneficiaries from './components/beneficiaries/Beneficiaries';
 import Programs from './components/programs/Programs';
 import Groups from './components/groups/Groups';
@@ -16,6 +18,7 @@ import UserManagement from './components/admin/UserManagement';
 import AuditLogs from './components/admin/AuditLogs';
 import SystemStatus from './components/admin/SystemStatus';
 import Notifications from './components/notifications/Notifications';
+import Settings from './components/settings/Settings';
 import './App.css';
 
 // Protected Route Component
@@ -37,12 +40,9 @@ const ProtectedRoute = ({ children, allowedRoles = [] }) => {
 
 // Layout Component
 const Layout = ({ children }) => (
-  <div className="min-h-screen bg-neutral-50">
-    <Navbar />
-    <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-      {children}
-    </main>
-  </div>
+  <MainLayout>
+    {children}
+  </MainLayout>
 );
 
 function App() {
@@ -53,6 +53,8 @@ function App() {
           {/* Public Routes */}
           <Route path="/login" element={<Login />} />
           <Route path="/register" element={<Register />} />
+          <Route path="/verify-email" element={<EmailVerification />} />
+          <Route path="/reset-password" element={<PasswordReset />} />
           <Route path="/unauthorized" element={<Unauthorized />} />
           
           {/* Protected Routes */}
@@ -137,6 +139,18 @@ function App() {
               <ProtectedRoute>
                 <Layout>
                   <Profile />
+                </Layout>
+              </ProtectedRoute>
+            } 
+          />
+          
+          {/* Settings - All authenticated users */}
+          <Route 
+            path="/settings" 
+            element={
+              <ProtectedRoute>
+                <Layout>
+                  <Settings />
                 </Layout>
               </ProtectedRoute>
             } 

@@ -462,25 +462,33 @@ ALTER TABLE audit_logs ENABLE ROW LEVEL SECURITY;
 CREATE OR REPLACE FUNCTION get_user_permissions(user_role VARCHAR)
 RETURNS TABLE(permission VARCHAR) AS $$
 BEGIN
-    RETURN QUERY
-    SELECT unnest(ARRAY[
-        CASE WHEN user_role IN ('SuperAdmin', 'Admin', 'DataEntry') THEN 'manage_beneficiaries' END,
-        CASE WHEN user_role IN ('SuperAdmin', 'Admin') THEN 'manage_programs' END,
-        CASE WHEN user_role IN ('SuperAdmin', 'Admin', 'DataEntry') THEN 'manage_groups' END,
-        CASE WHEN user_role IN ('SuperAdmin', 'Admin') THEN 'manage_loans' END,
-        CASE WHEN user_role IN ('SuperAdmin', 'Admin', 'DataEntry', 'Auditor') THEN 'view_reports' END,
-        CASE WHEN user_role = 'SuperAdmin' THEN 'manage_users' END,
-        CASE WHEN user_role = 'SuperAdmin' THEN 'system_settings' END
-    ]) as permission
-    WHERE unnest(ARRAY[
-        CASE WHEN user_role IN ('SuperAdmin', 'Admin', 'DataEntry') THEN 'manage_beneficiaries' END,
-        CASE WHEN user_role IN ('SuperAdmin', 'Admin') THEN 'manage_programs' END,
-        CASE WHEN user_role IN ('SuperAdmin', 'Admin', 'DataEntry') THEN 'manage_groups' END,
-        CASE WHEN user_role IN ('SuperAdmin', 'Admin') THEN 'manage_loans' END,
-        CASE WHEN user_role IN ('SuperAdmin', 'Admin', 'DataEntry', 'Auditor') THEN 'view_reports' END,
-        CASE WHEN user_role = 'SuperAdmin' THEN 'manage_users' END,
-        CASE WHEN user_role = 'SuperAdmin' THEN 'system_settings' END
-    ]) IS NOT NULL;
+    -- Return permissions based on user role
+    IF user_role IN ('SuperAdmin', 'Admin', 'DataEntry') THEN
+        RETURN QUERY SELECT 'manage_beneficiaries'::VARCHAR;
+    END IF;
+    
+    IF user_role IN ('SuperAdmin', 'Admin') THEN
+        RETURN QUERY SELECT 'manage_programs'::VARCHAR;
+    END IF;
+    
+    IF user_role IN ('SuperAdmin', 'Admin', 'DataEntry') THEN
+        RETURN QUERY SELECT 'manage_groups'::VARCHAR;
+    END IF;
+    
+    IF user_role IN ('SuperAdmin', 'Admin') THEN
+        RETURN QUERY SELECT 'manage_loans'::VARCHAR;
+    END IF;
+    
+    IF user_role IN ('SuperAdmin', 'Admin', 'DataEntry', 'Auditor') THEN
+        RETURN QUERY SELECT 'view_reports'::VARCHAR;
+    END IF;
+    
+    IF user_role = 'SuperAdmin' THEN
+        RETURN QUERY SELECT 'manage_users'::VARCHAR;
+        RETURN QUERY SELECT 'system_settings'::VARCHAR;
+    END IF;
+    
+    RETURN;
 END;
 $$ LANGUAGE plpgsql;
 

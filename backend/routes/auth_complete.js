@@ -4,6 +4,7 @@ const jwt = require('jsonwebtoken');
 const crypto = require('crypto');
 const router = express.Router();
 const pool = require('../config/database');
+const emailService = require('../services/emailService');
 
 // ============================
 // REGISTRATION
@@ -62,6 +63,15 @@ router.post('/register', async (req, res) => {
       VALUES ($1, $2, $3)
     `, [result.rows[0].user_id, verificationToken, expiresAt]);
 
+    // Send verification email
+    try {
+      await emailService.sendVerificationEmail(email, username, verificationToken);
+      console.log(`📧 Verification email sent to ${email}`);
+    } catch (emailError) {
+      console.error('❌ Failed to send verification email:', emailError.message);
+      // Don't fail registration if email fails
+    }
+
     // Log the action
     await pool.query(`
       INSERT INTO audit_logs (action, details, ip_address, user_id)
@@ -71,8 +81,8 @@ router.post('/register', async (req, res) => {
     res.status(201).json({
       success: true,
       data: result.rows[0],
-      message: 'User registered successfully. Please check your email for verification.',
-      verification_token: verificationToken // In production, send via email
+      message: 'User registered successfully. Please check your email for verification instructions.',
+      verification_token: verificationToken // For development only
     });
   } catch (error) {
     console.error('Error registering user:', error);
@@ -344,6 +354,15 @@ router.post('/forgot-password', async (req, res) => {
       VALUES ($1, $2, $3)
     `, [user.user_id, resetToken, expiresAt]);
 
+    // Send password reset email
+    try {
+      await emailService.sendPasswordResetEmail(email, user.username, resetToken);
+      console.log(`📧 Password reset email sent to ${email}`);
+    } catch (emailError) {
+      console.error('❌ Failed to send password reset email:', emailError.message);
+      // Don't fail the request if email fails
+    }
+
     // Log the action
     await pool.query(`
       INSERT INTO audit_logs (action, details, ip_address, user_id)
@@ -353,7 +372,7 @@ router.post('/forgot-password', async (req, res) => {
     res.json({
       success: true,
       message: 'If an account with that email exists, a password reset link has been sent.',
-      reset_token: resetToken // In production, send via email
+      reset_token: resetToken // For development only
     });
   } catch (error) {
     console.error('Error processing forgot password:', error);
@@ -481,6 +500,23 @@ router.post('/verify-email', async (req, res) => {
       [token]
     );
 
+    // Get user role for welcome email
+    const userResult = await pool.query(
+      'SELECT role, email FROM users WHERE user_id = $1',
+      [user_id]
+    );
+    const userRole = userResult.rows[0].role;
+    const userEmail = userResult.rows[0].email;
+
+    // Send welcome email
+    try {
+      await emailService.sendWelcomeEmail(userEmail, username, userRole);
+      console.log(`📧 Welcome email sent to ${userEmail}`);
+    } catch (emailError) {
+      console.error('❌ Failed to send welcome email:', emailError.message);
+      // Don't fail verification if email fails
+    }
+
     // Log the action
     await pool.query(`
       INSERT INTO audit_logs (action, details, ip_address, user_id)
@@ -489,7 +525,7 @@ router.post('/verify-email', async (req, res) => {
 
     res.json({
       success: true,
-      message: 'Email verified successfully'
+      message: 'Email verified successfully. Welcome to the Council Management System!'
     });
   } catch (error) {
     console.error('Error verifying email:', error);

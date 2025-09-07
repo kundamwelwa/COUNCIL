@@ -223,7 +223,7 @@ router.get('/monthly-trends', requireRole(['SuperAdmin', 'Admin', 'DataEntry', '
   try {
     const result = await pool.query(`
       SELECT 
-        DATE_TRUNC('month', created_at) as month,
+        DATE_TRUNC('month', COALESCE(p.created_at, gl.issued_date)) as month,
         COUNT(DISTINCT p.person_id) as beneficiaries,
         COUNT(DISTINCT gl.grant_loan_id) as loans,
         SUM(gl.amount) as loan_amount
@@ -418,12 +418,12 @@ router.get('/group-statistics', requireRole(['SuperAdmin', 'Admin', 'DataEntry',
       SELECT 
         g.group_type,
         COUNT(*) as group_count,
-        SUM(pg.membership_fee) as total_membership_fees,
-        AVG(pg.membership_fee) as average_membership_fee
+        SUM(g.membership_fee) as total_membership_fees,
+        AVG(g.membership_fee) as average_membership_fee
       FROM groups g
       LEFT JOIN person_groups pg ON g.group_id = pg.group_id AND pg.status = 'Active'
       WHERE g.status = 'Active'
-      GROUP BY g.group_type
+      GROUP BY g.group_type, g.membership_fee
       ORDER BY group_count DESC
     `);
 
