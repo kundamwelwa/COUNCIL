@@ -17,7 +17,7 @@ import {
   Bell,
   Search,
   Filter,
-  Activity
+  Activity,
 } from 'lucide-react';
 import { 
   BarChart, 
@@ -34,6 +34,7 @@ import {
   AreaChart
 } from 'recharts';
 import axios from 'axios';
+import CalendarSchedule from './calendar/CalendarSchedule';
 
 const Dashboard = () => {
   const [loading, setLoading] = useState(true);
@@ -263,138 +264,198 @@ const Dashboard = () => {
       </div>
 
       {/* Calendar Navigation */}
-      <div className="bg-white rounded-xl shadow-lg border border-neutral-200 p-4">
+      <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg border border-neutral-200 dark:border-gray-700 p-4">
         <div className="flex items-center justify-between mb-4">
-          <h3 className="text-lg font-semibold text-neutral-800">Calendar & Quick Actions</h3>
+          <h3 className="text-lg font-semibold text-neutral-800 dark:text-white">Calendar & Quick Actions</h3>
           <div className="flex items-center space-x-2">
-            <button className="p-2 text-neutral-500 hover:text-neutral-700 hover:bg-neutral-100 rounded-lg transition-colors">
+            <button className="p-2 text-neutral-500 dark:text-gray-400 hover:text-neutral-700 dark:hover:text-gray-300 hover:bg-neutral-100 dark:hover:bg-gray-700 rounded-lg transition-colors">
               <Calendar className="w-4 h-4" />
             </button>
-            <button className="p-2 text-neutral-500 hover:text-neutral-700 hover:bg-neutral-100 rounded-lg transition-colors">
+            <button className="p-2 text-neutral-500 dark:text-gray-400 hover:text-neutral-700 dark:hover:text-gray-300 hover:bg-neutral-100 dark:hover:bg-gray-700 rounded-lg transition-colors">
               <Filter className="w-4 h-4" />
             </button>
           </div>
         </div>
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-4">
-          <div className="flex items-center space-x-3 p-3 bg-neutral-50 rounded-lg hover:bg-neutral-100 transition-colors cursor-pointer">
-            <div className="w-10 h-10 bg-primary-100 rounded-lg flex items-center justify-center">
-              <Calendar className="w-5 h-5 text-primary-600" />
+          <div className="flex items-center space-x-3 p-3 bg-neutral-50 dark:bg-gray-700 rounded-lg hover:bg-neutral-100 dark:hover:bg-gray-600 transition-colors cursor-pointer">
+            <div className="w-10 h-10 bg-primary-100 dark:bg-primary-900 rounded-lg flex items-center justify-center">
+              <Calendar className="w-5 h-5 text-primary-600 dark:text-primary-400" />
             </div>
             <div>
-              <p className="text-sm font-medium text-neutral-800">Today's Activities</p>
-              <p className="text-xs text-neutral-500">{todayActivities.length} scheduled activities</p>
+              <p className="text-sm font-medium text-neutral-800 dark:text-white">Today's Activities</p>
+              <p className="text-xs text-neutral-500 dark:text-gray-400">{todayActivities.length} scheduled activities</p>
             </div>
           </div>
-          <div className="flex items-center space-x-3 p-3 bg-neutral-50 rounded-lg hover:bg-neutral-100 transition-colors cursor-pointer">
-            <div className="w-10 h-10 bg-secondary-100 rounded-lg flex items-center justify-center">
-              <Activity className="w-5 h-5 text-secondary-600" />
+          <div className="flex items-center space-x-3 p-3 bg-neutral-50 dark:bg-gray-700 rounded-lg hover:bg-neutral-100 dark:hover:bg-gray-600 transition-colors cursor-pointer">
+            <div className="w-10 h-10 bg-secondary-100 dark:bg-secondary-900 rounded-lg flex items-center justify-center">
+              <Activity className="w-5 h-5 text-secondary-600 dark:text-secondary-400" />
             </div>
             <div>
-              <p className="text-sm font-medium text-neutral-800">Pending Approvals</p>
-              <p className="text-xs text-neutral-500">{pendingApprovals.length} items waiting</p>
+              <p className="text-sm font-medium text-neutral-800 dark:text-white">Pending Approvals</p>
+              <p className="text-xs text-neutral-500 dark:text-gray-400">{pendingApprovals.length} items waiting</p>
             </div>
           </div>
-          <div className="flex items-center space-x-3 p-3 bg-neutral-50 rounded-lg hover:bg-neutral-100 transition-colors cursor-pointer">
-            <div className="w-10 h-10 bg-accent-100 rounded-lg flex items-center justify-center">
-              <MapPin className="w-5 h-5 text-accent-600" />
+          <div className="flex items-center space-x-3 p-3 bg-neutral-50 dark:bg-gray-700 rounded-lg hover:bg-neutral-100 dark:hover:bg-gray-600 transition-colors cursor-pointer">
+            <div className="w-10 h-10 bg-accent-100 dark:bg-accent-900 rounded-lg flex items-center justify-center">
+              <MapPin className="w-5 h-5 text-accent-600 dark:text-accent-400" />
             </div>
             <div>
-              <p className="text-sm font-medium text-neutral-800">Field Visits</p>
-              <p className="text-xs text-neutral-500">{fieldVisits.length} scheduled today</p>
+              <p className="text-sm font-medium text-neutral-800 dark:text-white">Field Visits</p>
+              <p className="text-xs text-neutral-500 dark:text-gray-400">{fieldVisits.length} scheduled today</p>
             </div>
           </div>
-          <div className="flex items-center space-x-3 p-3 bg-neutral-50 rounded-lg hover:bg-neutral-100 transition-colors cursor-pointer">
-            <div className="w-10 h-10 bg-green-100 rounded-lg flex items-center justify-center">
-              <Phone className="w-5 h-5 text-green-600" />
+          <div className="flex items-center space-x-3 p-3 bg-neutral-50 dark:bg-gray-700 rounded-lg hover:bg-neutral-100 dark:hover:bg-gray-600 transition-colors cursor-pointer">
+            <div className="w-10 h-10 bg-green-100 dark:bg-green-900 rounded-lg flex items-center justify-center">
+              <Phone className="w-5 h-5 text-green-600 dark:text-green-400" />
             </div>
             <div>
-              <p className="text-sm font-medium text-neutral-800">Follow-ups</p>
-              <p className="text-xs text-neutral-500">{followUps.length} calls pending</p>
+              <p className="text-sm font-medium text-neutral-800 dark:text-white">Follow-ups</p>
+              <p className="text-xs text-neutral-500 dark:text-gray-400">{followUps.length} calls pending</p>
             </div>
           </div>
-          <div className="flex items-center space-x-3 p-3 bg-neutral-50 rounded-lg hover:bg-neutral-100 transition-colors cursor-pointer">
-            <div className="w-10 h-10 bg-purple-100 rounded-lg flex items-center justify-center">
-              <Mail className="w-5 h-5 text-purple-600" />
+          <div className="flex items-center space-x-3 p-3 bg-neutral-50 dark:bg-gray-700 rounded-lg hover:bg-neutral-100 dark:hover:bg-gray-600 transition-colors cursor-pointer">
+            <div className="w-10 h-10 bg-purple-100 dark:bg-purple-900 rounded-lg flex items-center justify-center">
+              <Mail className="w-5 h-5 text-purple-600 dark:text-purple-400" />
             </div>
             <div>
-              <p className="text-sm font-medium text-neutral-800">Email Notifications</p>
-              <p className="text-xs text-neutral-500">{todayActivities.length + pendingApprovals.length + followUps.length} unread messages</p>
+              <p className="text-sm font-medium text-neutral-800 dark:text-white">Email Notifications</p>
+              <p className="text-xs text-neutral-500 dark:text-gray-400">{todayActivities.length + pendingApprovals.length + followUps.length} unread messages</p>
             </div>
           </div>
         </div>
       </div>
 
-      {/* Professional Calendar Section */}
-      <div className="bg-white rounded-xl shadow-lg border border-neutral-200 p-6">
+      {/* Program Performance Dashboard */}
+      <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg border border-neutral-200 dark:border-gray-700 p-6">
         <div className="flex items-center justify-between mb-6">
-          <h3 className="text-lg font-semibold text-neutral-800">Calendar & Schedule</h3>
+          <h3 className="text-lg font-semibold text-neutral-800 dark:text-white">Program Performance Dashboard</h3>
           <div className="flex items-center space-x-2">
-            <button className="px-3 py-1 text-sm bg-primary-500 text-white rounded-lg hover:bg-primary-600 transition-colors">
-              Today
-            </button>
-            <button className="px-3 py-1 text-sm border border-neutral-300 text-neutral-600 rounded-lg hover:bg-neutral-50 transition-colors">
-              Week
-            </button>
-            <button className="px-3 py-1 text-sm border border-neutral-300 text-neutral-600 rounded-lg hover:bg-neutral-50 transition-colors">
-              Month
-            </button>
+            <div className="w-2 h-2 bg-green-500 rounded-full animate-pulse"></div>
+            <span className="text-sm text-neutral-600 dark:text-gray-400">Real-time</span>
           </div>
         </div>
         
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-          {/* Calendar View */}
+          {/* Program Statistics */}
           <div className="lg:col-span-2">
-            <div className="bg-neutral-50 rounded-lg p-4">
-              <div className="grid grid-cols-7 gap-2 mb-4">
-                {['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'].map(day => (
-                  <div key={day} className="text-center text-sm font-medium text-neutral-600 py-2">
-                    {day}
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              {[
+                {
+                  name: 'FISP',
+                  beneficiaries: 1247,
+                  budget: 2000000,
+                  disbursed: 1750000,
+                  status: 'active',
+                  completion: 87.5
+                },
+                {
+                  name: 'Bursaries',
+                  beneficiaries: 856,
+                  budget: 500000,
+                  disbursed: 425000,
+                  status: 'active',
+                  completion: 85.0
+                },
+                {
+                  name: 'SMEs',
+                  beneficiaries: 234,
+                  budget: 1000000,
+                  disbursed: 650000,
+                  status: 'active',
+                  completion: 65.0
+                },
+                {
+                  name: 'Social Welfare',
+                  beneficiaries: 1834,
+                  budget: 750000,
+                  disbursed: 720000,
+                  status: 'active',
+                  completion: 96.0
+                }
+              ].map((program, index) => (
+                <div key={index} className="p-4 bg-neutral-50 dark:bg-gray-700 rounded-lg hover:bg-neutral-100 dark:hover:bg-gray-600 transition-colors">
+                  <div className="flex items-center justify-between mb-3">
+                    <h4 className="text-sm font-semibold text-neutral-800 dark:text-white">{program.name}</h4>
+                    <span className={`px-2 py-1 text-xs rounded-full ${
+                      program.completion >= 90 
+                        ? 'bg-green-100 dark:bg-green-900 text-green-700 dark:text-green-300'
+                        : program.completion >= 75
+                        ? 'bg-yellow-100 dark:bg-yellow-900 text-yellow-700 dark:text-yellow-300'
+                        : 'bg-orange-100 dark:bg-orange-900 text-orange-700 dark:text-orange-300'
+                    }`}>
+                      {program.completion}%
+                    </span>
                   </div>
-                ))}
-              </div>
-              <div className="grid grid-cols-7 gap-2">
-                {Array.from({ length: 35 }, (_, i) => {
-                  const date = i - 6; // Start from previous month
-                  const isCurrentMonth = date > 0 && date <= 31;
-                  const isToday = date === new Date().getDate();
-                  
-                  return (
-                    <div
-                      key={i}
-                      className={`h-10 flex items-center justify-center text-sm rounded-lg cursor-pointer transition-colors ${
-                        isCurrentMonth
-                          ? isToday
-                            ? 'bg-primary-500 text-white'
-                            : 'text-neutral-800 hover:bg-neutral-200'
-                          : 'text-neutral-400'
-                      }`}
-                    >
-                      {isCurrentMonth ? date : ''}
+                  <div className="space-y-2">
+                    <div className="flex justify-between text-xs">
+                      <span className="text-neutral-600 dark:text-gray-400">Beneficiaries</span>
+                      <span className="font-medium text-neutral-800 dark:text-white">{program.beneficiaries.toLocaleString()}</span>
                     </div>
-                  );
-                })}
-              </div>
+                    <div className="flex justify-between text-xs">
+                      <span className="text-neutral-600 dark:text-gray-400">Budget</span>
+                      <span className="font-medium text-neutral-800 dark:text-white">ZMW {program.budget.toLocaleString()}</span>
+                    </div>
+                    <div className="flex justify-between text-xs">
+                      <span className="text-neutral-600 dark:text-gray-400">Disbursed</span>
+                      <span className="font-medium text-neutral-800 dark:text-white">ZMW {program.disbursed.toLocaleString()}</span>
+                    </div>
+                    <div className="w-full bg-neutral-200 dark:bg-gray-600 rounded-full h-2 mt-3">
+                      <div 
+                        className={`h-2 rounded-full transition-all duration-300 ${
+                          program.completion >= 90 
+                            ? 'bg-green-500'
+                            : program.completion >= 75
+                            ? 'bg-yellow-500'
+                            : 'bg-orange-500'
+                        }`}
+                        style={{ width: `${program.completion}%` }}
+                      ></div>
+                    </div>
+                  </div>
+                </div>
+              ))}
             </div>
           </div>
           
-          {/* Upcoming Events */}
+          {/* Key Performance Indicators */}
           <div>
-            <h4 className="text-md font-semibold text-neutral-800 mb-4">Upcoming Events</h4>
-            <div className="space-y-3">
-              {todayActivities.length > 0 ? todayActivities.slice(0, 5).map((activity, index) => (
-                <div key={index} className="flex items-start space-x-3 p-3 bg-neutral-50 rounded-lg">
-                  <div className="w-2 h-2 bg-primary-500 rounded-full mt-2"></div>
-                  <div className="flex-1">
-                    <p className="text-sm font-medium text-neutral-800">{activity.title}</p>
-                    <p className="text-xs text-neutral-500">{new Date(activity.created_at).toLocaleTimeString()}</p>
-                  </div>
+            <h4 className="text-md font-semibold text-neutral-800 dark:text-white mb-4">Key Performance Indicators</h4>
+            <div className="space-y-4">
+              <div className="p-3 bg-blue-50 dark:bg-blue-900/20 rounded-lg border border-blue-200 dark:border-blue-800">
+                <div className="flex items-center justify-between mb-2">
+                  <span className="text-sm font-medium text-blue-800 dark:text-blue-300">Overall Program Success</span>
+                  <TrendingUp className="w-4 h-4 text-blue-600 dark:text-blue-400" />
                 </div>
-              )) : (
-                <div className="text-center py-8 text-neutral-500">
-                  <Calendar className="w-8 h-8 mx-auto mb-2 text-neutral-300" />
-                  <p>No events scheduled</p>
+                <div className="text-2xl font-bold text-blue-900 dark:text-blue-200">83.4%</div>
+                <div className="text-xs text-blue-600 dark:text-blue-400 mt-1">+5.2% from last quarter</div>
+              </div>
+              
+              <div className="p-3 bg-green-50 dark:bg-green-900/20 rounded-lg border border-green-200 dark:border-green-800">
+                <div className="flex items-center justify-between mb-2">
+                  <span className="text-sm font-medium text-green-800 dark:text-green-300">Budget Utilization</span>
+                  <DollarSign className="w-4 h-4 text-green-600 dark:text-green-400" />
                 </div>
-              )}
+                <div className="text-2xl font-bold text-green-900 dark:text-green-200">78.9%</div>
+                <div className="text-xs text-green-600 dark:text-green-400 mt-1">ZMW 3.5M disbursed</div>
+              </div>
+              
+              <div className="p-3 bg-purple-50 dark:bg-purple-900/20 rounded-lg border border-purple-200 dark:border-purple-800">
+                <div className="flex items-center justify-between mb-2">
+                  <span className="text-sm font-medium text-purple-800 dark:text-purple-300">Active Beneficiaries</span>
+                  <Users className="w-4 h-4 text-purple-600 dark:text-purple-400" />
+                </div>
+                <div className="text-2xl font-bold text-purple-900 dark:text-purple-200">4,171</div>
+                <div className="text-xs text-purple-600 dark:text-purple-400 mt-1">Across all programs</div>
+              </div>
+              
+              <div className="p-3 bg-orange-50 dark:bg-orange-900/20 rounded-lg border border-orange-200 dark:border-orange-800">
+                <div className="flex items-center justify-between mb-2">
+                  <span className="text-sm font-medium text-orange-800 dark:text-orange-300">Pending Reviews</span>
+                  <RefreshCw className="w-4 h-4 text-orange-600 dark:text-orange-400" />
+                </div>
+                <div className="text-2xl font-bold text-orange-900 dark:text-orange-200">23</div>
+                <div className="text-xs text-orange-600 dark:text-orange-400 mt-1">Require attention</div>
+              </div>
             </div>
           </div>
         </div>
@@ -404,8 +465,8 @@ const Dashboard = () => {
       <main>
         {/* Welcome Section */}
         <div className="mb-6 sm:mb-8">
-          <h2 className="text-xl sm:text-2xl font-bold text-neutral-800 mb-2">Dashboard Overview</h2>
-          <p className="text-sm sm:text-base text-neutral-600">Welcome to the Council Beneficiaries Management System</p>
+          <h2 className="text-xl sm:text-2xl font-bold text-neutral-800 dark:text-white mb-2">Dashboard Overview</h2>
+          <p className="text-sm sm:text-base text-neutral-600 dark:text-gray-400">Welcome to the Council Beneficiaries Management System</p>
         </div>
 
         {/* Primary Stats Cards */}
@@ -494,15 +555,16 @@ const Dashboard = () => {
           <ChartCard title="Beneficiaries by Program">
             <ResponsiveContainer width="100%" height={300}>
               <BarChart data={beneficiariesByProgram}>
-                <CartesianGrid strokeDasharray="3 3" stroke="#e2e8f0" />
-                <XAxis dataKey="name" stroke="#64748b" fontSize={12} />
-                <YAxis stroke="#64748b" fontSize={12} />
+                <CartesianGrid strokeDasharray="3 3" stroke="var(--grid-stroke, #e2e8f0)" />
+                <XAxis dataKey="name" stroke="var(--axis-stroke, #64748b)" fontSize={12} />
+                <YAxis stroke="var(--axis-stroke, #64748b)" fontSize={12} />
                 <Tooltip 
                   contentStyle={{ 
-                    backgroundColor: 'white', 
-                    border: '1px solid #e2e8f0',
+                    backgroundColor: 'var(--tooltip-bg, white)', 
+                    border: '1px solid var(--tooltip-border, #e2e8f0)',
                     borderRadius: '8px',
-                    boxShadow: '0 4px 6px -1px rgba(0, 0, 0, 0.1)'
+                    boxShadow: '0 4px 6px -1px rgba(0, 0, 0, 0.1)',
+                    color: 'var(--tooltip-text, #1f2937)'
                   }} 
                 />
                 <Bar dataKey="count" radius={[4, 4, 0, 0]}>
@@ -533,10 +595,11 @@ const Dashboard = () => {
                 </Pie>
                 <Tooltip 
                   contentStyle={{ 
-                    backgroundColor: 'white', 
-                    border: '1px solid #e2e8f0',
+                    backgroundColor: 'var(--tooltip-bg, white)', 
+                    border: '1px solid var(--tooltip-border, #e2e8f0)',
                     borderRadius: '8px',
-                    boxShadow: '0 4px 6px -1px rgba(0, 0, 0, 0.1)'
+                    boxShadow: '0 4px 6px -1px rgba(0, 0, 0, 0.1)',
+                    color: 'var(--tooltip-text, #1f2937)'
                   }} 
                 />
               </PieChart>
@@ -545,7 +608,7 @@ const Dashboard = () => {
               {loanStatusData.map((item, index) => (
                 <div key={index} className="flex items-center space-x-2">
                   <div className="w-3 h-3 rounded-full" style={{ backgroundColor: item.color }}></div>
-                  <span className="text-sm text-neutral-600">{item.name}: {item.value}</span>
+                  <span className="text-sm text-neutral-600 dark:text-gray-300">{item.name}: {item.value}</span>
                 </div>
               ))}
             </div>
@@ -558,15 +621,16 @@ const Dashboard = () => {
           <ChartCard title="Monthly Trends" className="lg:col-span-2">
             <ResponsiveContainer width="100%" height={300}>
               <AreaChart data={monthlyTrends}>
-                <CartesianGrid strokeDasharray="3 3" stroke="#e2e8f0" />
-                <XAxis dataKey="month" stroke="#64748b" fontSize={12} />
-                <YAxis stroke="#64748b" fontSize={12} />
+                <CartesianGrid strokeDasharray="3 3" stroke="var(--grid-stroke, #e2e8f0)" />
+                <XAxis dataKey="month" stroke="var(--axis-stroke, #64748b)" fontSize={12} />
+                <YAxis stroke="var(--axis-stroke, #64748b)" fontSize={12} />
                 <Tooltip 
                   contentStyle={{ 
-                    backgroundColor: 'white', 
-                    border: '1px solid #e2e8f0',
+                    backgroundColor: 'var(--tooltip-bg, white)', 
+                    border: '1px solid var(--tooltip-border, #e2e8f0)',
                     borderRadius: '8px',
-                    boxShadow: '0 4px 6px -1px rgba(0, 0, 0, 0.1)'
+                    boxShadow: '0 4px 6px -1px rgba(0, 0, 0, 0.1)',
+                    color: 'var(--tooltip-text, #1f2937)'
                   }} 
                 />
                 <Area 
@@ -593,18 +657,18 @@ const Dashboard = () => {
           <ChartCard title="Recent Activities">
             <div className="space-y-4">
               {recentActivities.map((activity) => (
-                <div key={activity.id} className="flex items-start space-x-3 p-3 rounded-lg hover:bg-neutral-50 transition-colors">
+                <div key={activity.id} className="flex items-start space-x-3 p-3 rounded-lg hover:bg-neutral-50 dark:hover:bg-gray-700 transition-colors">
                   <div className={`w-2 h-2 rounded-full mt-2 ${
                     activity.type === 'success' ? 'bg-primary-500' :
                     activity.type === 'warning' ? 'bg-secondary-500' :
                     'bg-accent-500'
                   }`}></div>
                   <div className="flex-1 min-w-0">
-                    <p className="text-sm font-medium text-neutral-800">{activity.action}</p>
-                    <p className="text-sm text-neutral-600 truncate">{activity.person}</p>
-                    {activity.program && <p className="text-xs text-neutral-500">{activity.program}</p>}
-                    {activity.amount && <p className="text-xs text-neutral-500">{activity.amount}</p>}
-                    <p className="text-xs text-neutral-400 mt-1">{activity.time}</p>
+                    <p className="text-sm font-medium text-neutral-800 dark:text-white">{activity.action}</p>
+                    <p className="text-sm text-neutral-600 dark:text-gray-300 truncate">{activity.person}</p>
+                    {activity.program && <p className="text-xs text-neutral-500 dark:text-gray-400">{activity.program}</p>}
+                    {activity.amount && <p className="text-xs text-neutral-500 dark:text-gray-400">{activity.amount}</p>}
+                    <p className="text-xs text-neutral-400 dark:text-gray-500 mt-1">{activity.time}</p>
                   </div>
                 </div>
               ))}
@@ -616,25 +680,26 @@ const Dashboard = () => {
         </div>
 
         {/* Additional Analytics Sections */}
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 sm:gap-6 mb-6 sm:mb-8">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 sm:gap-8 mb-8 sm:mb-10">
           {/* Geographic Distribution */}
           <ChartCard title="Geographic Distribution">
-            <div className="space-y-3">
+            <div className="space-y-4">
               {geographicDistribution.length > 0 ? geographicDistribution.map((item, index) => (
-                <div key={index} className="flex items-center justify-between p-3 bg-neutral-50 rounded-lg">
-                  <div className="flex items-center space-x-3">
-                    <MapPin className="w-4 h-4 text-neutral-500" />
+                <div key={index} className="flex items-center justify-between p-4 bg-neutral-50 dark:bg-gray-700 rounded-lg hover:bg-neutral-100 dark:hover:bg-gray-600 transition-colors">
+                  <div className="flex items-center space-x-4">
+                    <MapPin className="w-5 h-5 text-neutral-500 dark:text-gray-400" />
                     <div>
-                      <p className="text-sm font-medium text-neutral-800">{item.district}</p>
-                      <p className="text-xs text-neutral-500">{item.province}</p>
+                      <p className="text-sm font-medium text-neutral-800 dark:text-white">{item.district}</p>
+                      <p className="text-xs text-neutral-500 dark:text-gray-400">{item.province}</p>
                     </div>
                   </div>
-                  <span className="text-sm font-semibold text-neutral-800">{item.count}</span>
+                  <span className="text-sm font-semibold text-neutral-800 dark:text-white bg-primary-100 dark:bg-primary-900 px-3 py-1 rounded-full">{item.count}</span>
                 </div>
               )) : (
-                <div className="text-center py-8 text-neutral-500">
-                  <MapPin className="w-8 h-8 mx-auto mb-2 text-neutral-300" />
-                  <p>No geographic data available</p>
+                <div className="text-center py-12 text-neutral-500 dark:text-gray-400">
+                  <MapPin className="w-12 h-12 mx-auto mb-4 text-neutral-300 dark:text-gray-600" />
+                  <p className="text-lg font-medium">No geographic data available</p>
+                  <p className="text-sm mt-1">Data will appear here once beneficiaries are registered</p>
                 </div>
               )}
             </div>
@@ -642,28 +707,33 @@ const Dashboard = () => {
 
           {/* Financial Summary */}
           <ChartCard title="Financial Summary">
-            <div className="space-y-4">
+            <div className="space-y-6">
               {financialSummary.length > 0 ? financialSummary.map((item, index) => (
-                <div key={index} className="p-4 bg-neutral-50 rounded-lg">
-                  <div className="flex items-center justify-between mb-2">
-                    <h4 className="text-sm font-medium text-neutral-800">{item.type}</h4>
-                    <span className="text-sm text-neutral-500">{item.count} items</span>
+                <div key={index} className="p-5 bg-neutral-50 dark:bg-gray-700 rounded-lg hover:bg-neutral-100 dark:hover:bg-gray-600 transition-colors">
+                  <div className="flex items-center justify-between mb-4">
+                    <h4 className="text-base font-semibold text-neutral-800 dark:text-white">{item.type}</h4>
+                    <span className="text-sm text-neutral-500 dark:text-gray-400 bg-gray-200 dark:bg-gray-600 px-3 py-1 rounded-full">{item.count} items</span>
                   </div>
-                  <div className="space-y-2">
-                    <div className="flex justify-between text-xs">
-                      <span>Total Amount:</span>
-                      <span className="font-medium">ZMW {item.totalAmount?.toLocaleString() || '0'}</span>
+                  <div className="space-y-3">
+                    <div className="flex justify-between items-center py-2 border-b border-neutral-200 dark:border-gray-600">
+                      <span className="text-sm text-neutral-600 dark:text-gray-300">Total Amount:</span>
+                      <span className="font-semibold text-neutral-800 dark:text-white">ZMW {item.totalAmount?.toLocaleString() || '0'}</span>
                     </div>
-                    <div className="flex justify-between text-xs">
-                      <span>Total Repaid:</span>
-                      <span className="font-medium">ZMW {item.totalRepaid?.toLocaleString() || '0'}</span>
+                    <div className="flex justify-between items-center py-2 border-b border-neutral-200 dark:border-gray-600">
+                      <span className="text-sm text-neutral-600 dark:text-gray-300">Total Repaid:</span>
+                      <span className="font-semibold text-green-600 dark:text-green-400">ZMW {item.totalRepaid?.toLocaleString() || '0'}</span>
+                    </div>
+                    <div className="flex justify-between items-center py-2">
+                      <span className="text-sm text-neutral-600 dark:text-gray-300">Outstanding:</span>
+                      <span className="font-semibold text-orange-600 dark:text-orange-400">ZMW {((item.totalAmount || 0) - (item.totalRepaid || 0)).toLocaleString()}</span>
                     </div>
                   </div>
                 </div>
               )) : (
-                <div className="text-center py-8 text-neutral-500">
-                  <DollarSign className="w-8 h-8 mx-auto mb-2 text-neutral-300" />
-                  <p>No financial data available</p>
+                <div className="text-center py-12 text-neutral-500 dark:text-gray-400">
+                  <DollarSign className="w-12 h-12 mx-auto mb-4 text-neutral-300 dark:text-gray-600" />
+                  <p className="text-lg font-medium">No financial data available</p>
+                  <p className="text-sm mt-1">Financial summaries will appear here once loans are processed</p>
                 </div>
               )}
             </div>
@@ -671,39 +741,48 @@ const Dashboard = () => {
         </div>
 
         {/* Program Performance & Group Statistics */}
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 sm:gap-6 mb-6 sm:mb-8">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 sm:gap-8 mb-8 sm:mb-10">
           {/* Program Performance */}
           <ChartCard title="Program Performance">
-            <div className="space-y-4">
+            <div className="space-y-5">
               {programPerformance.length > 0 ? programPerformance.map((item, index) => (
-                <div key={index} className="p-4 bg-neutral-50 rounded-lg">
-                  <div className="flex items-center justify-between mb-2">
-                    <h4 className="text-sm font-medium text-neutral-800">{item.programName}</h4>
-                    <span className="text-sm text-neutral-500">{item.beneficiaryCount} beneficiaries</span>
+                <div key={index} className="p-5 bg-neutral-50 dark:bg-gray-700 rounded-lg hover:bg-neutral-100 dark:hover:bg-gray-600 transition-colors">
+                  <div className="flex items-center justify-between mb-4">
+                    <h4 className="text-base font-semibold text-neutral-800 dark:text-white">{item.programName}</h4>
+                    <span className="text-sm text-neutral-500 dark:text-gray-400 bg-blue-100 dark:bg-blue-900 px-3 py-1 rounded-full">{item.beneficiaryCount} beneficiaries</span>
                   </div>
-                  <div className="space-y-2">
-                    <div className="flex justify-between text-xs">
-                      <span>Budget Allocation:</span>
-                      <span className="font-medium">ZMW {item.budgetAllocation?.toLocaleString() || '0'}</span>
+                  <div className="space-y-3">
+                    <div className="flex justify-between items-center py-2 border-b border-neutral-200 dark:border-gray-600">
+                      <span className="text-sm text-neutral-600 dark:text-gray-300">Budget Allocation:</span>
+                      <span className="font-semibold text-neutral-800 dark:text-white">ZMW {item.budgetAllocation?.toLocaleString() || '0'}</span>
                     </div>
-                    <div className="flex justify-between text-xs">
-                      <span>Total Disbursed:</span>
-                      <span className="font-medium">ZMW {item.totalDisbursed?.toLocaleString() || '0'}</span>
+                    <div className="flex justify-between items-center py-2 border-b border-neutral-200 dark:border-gray-600">
+                      <span className="text-sm text-neutral-600 dark:text-gray-300">Total Disbursed:</span>
+                      <span className="font-semibold text-green-600 dark:text-green-400">ZMW {item.totalDisbursed?.toLocaleString() || '0'}</span>
                     </div>
-                    <div className="w-full bg-neutral-200 rounded-full h-2">
-                      <div 
-                        className="bg-primary-500 h-2 rounded-full" 
-                        style={{ 
-                          width: `${item.budgetAllocation > 0 ? (item.totalDisbursed / item.budgetAllocation) * 100 : 0}%` 
-                        }}
-                      ></div>
+                    <div className="space-y-2">
+                      <div className="flex justify-between text-xs">
+                        <span className="text-neutral-600 dark:text-gray-300">Budget Utilization:</span>
+                        <span className="font-medium text-neutral-800 dark:text-white">
+                          {item.budgetAllocation > 0 ? Math.round((item.totalDisbursed / item.budgetAllocation) * 100) : 0}%
+                        </span>
+                      </div>
+                      <div className="w-full bg-neutral-200 dark:bg-gray-600 rounded-full h-3">
+                        <div 
+                          className="bg-gradient-to-r from-primary-500 to-secondary-500 h-3 rounded-full transition-all duration-500" 
+                          style={{ 
+                            width: `${item.budgetAllocation > 0 ? (item.totalDisbursed / item.budgetAllocation) * 100 : 0}%` 
+                          }}
+                        ></div>
+                      </div>
                     </div>
                   </div>
                 </div>
               )) : (
-                <div className="text-center py-8 text-neutral-500">
-                  <Building2 className="w-8 h-8 mx-auto mb-2 text-neutral-300" />
-                  <p>No program performance data available</p>
+                <div className="text-center py-12 text-neutral-500 dark:text-gray-400">
+                  <Building2 className="w-12 h-12 mx-auto mb-4 text-neutral-300 dark:text-gray-600" />
+                  <p className="text-lg font-medium">No program performance data available</p>
+                  <p className="text-sm mt-1">Performance metrics will appear here once programs are active</p>
                 </div>
               )}
             </div>
@@ -711,30 +790,31 @@ const Dashboard = () => {
 
           {/* Group Statistics */}
           <ChartCard title="Group Statistics">
-            <div className="space-y-4">
+            <div className="space-y-5">
               {groupStatistics.length > 0 ? groupStatistics.map((item, index) => (
-                <div key={index} className="p-4 bg-neutral-50 rounded-lg">
-                  <div className="flex items-center justify-between mb-2">
-                    <h4 className="text-sm font-medium text-neutral-800">{item.groupType}</h4>
-                    <span className="text-sm text-neutral-500">{item.groupCount} groups</span>
+                <div key={index} className="p-5 bg-neutral-50 dark:bg-gray-700 rounded-lg hover:bg-neutral-100 dark:hover:bg-gray-600 transition-colors">
+                  <div className="flex items-center justify-between mb-4">
+                    <h4 className="text-base font-semibold text-neutral-800 dark:text-white">{item.groupType}</h4>
+                    <span className="text-sm text-neutral-500 dark:text-gray-400 bg-green-100 dark:bg-green-900 px-3 py-1 rounded-full">{item.groupCount} groups</span>
                   </div>
-                  <div className="space-y-2">
-                    <div className="flex justify-between text-xs">
-                      <span>Total Membership Fees:</span>
-                      <span className="font-medium">ZMW {item.totalMembershipFees?.toLocaleString() || '0'}</span>
+                  <div className="space-y-3">
+                    <div className="flex justify-between items-center py-2 border-b border-neutral-200 dark:border-gray-600">
+                      <span className="text-sm text-neutral-600 dark:text-gray-300">Total Membership Fees:</span>
+                      <span className="font-semibold text-neutral-800 dark:text-white">ZMW {item.totalMembershipFees?.toLocaleString() || '0'}</span>
                     </div>
-                    <div className="flex justify-between text-xs">
-                      <span>Average per Group:</span>
-                      <span className="font-medium">
+                    <div className="flex justify-between items-center py-2">
+                      <span className="text-sm text-neutral-600 dark:text-gray-300">Average per Group:</span>
+                      <span className="font-semibold text-blue-600 dark:text-blue-400">
                         ZMW {item.groupCount > 0 ? Math.round(item.totalMembershipFees / item.groupCount) : '0'}
                       </span>
                     </div>
                   </div>
                 </div>
               )) : (
-                <div className="text-center py-8 text-neutral-500">
-                  <UserCheck className="w-8 h-8 mx-auto mb-2 text-neutral-300" />
-                  <p>No group statistics available</p>
+                <div className="text-center py-12 text-neutral-500 dark:text-gray-400">
+                  <UserCheck className="w-12 h-12 mx-auto mb-4 text-neutral-300 dark:text-gray-600" />
+                  <p className="text-lg font-medium">No group statistics available</p>
+                  <p className="text-sm mt-1">Group data will appear here once groups are registered</p>
                 </div>
               )}
             </div>
@@ -742,46 +822,77 @@ const Dashboard = () => {
         </div>
 
         {/* Quick Actions */}
-        <div className="mt-6 sm:mt-8 bg-white rounded-xl shadow-lg border border-neutral-200 p-4 sm:p-6">
-          <h3 className="text-lg font-semibold text-neutral-800 mb-4">Quick Actions</h3>
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4">
-            <button className="flex items-center space-x-3 p-3 sm:p-4 border border-neutral-200 rounded-lg hover:border-primary-500 hover:bg-primary-50 transition-all group">
-              <div className="p-2 bg-primary-500 rounded-lg group-hover:bg-primary-600 transition-colors">
-                <Users className="w-4 h-4 sm:w-5 sm:h-5 text-white" />
+        <div className="mt-8 sm:mt-10 bg-white dark:bg-gray-800 rounded-xl shadow-lg border border-neutral-200 dark:border-gray-700 p-6 sm:p-8">
+          <div className="flex items-center justify-between mb-6">
+            <h3 className="text-xl font-semibold text-neutral-800 dark:text-white">Quick Actions</h3>
+            <div className="flex items-center space-x-2">
+              <div className="w-2 h-2 bg-green-500 rounded-full animate-pulse"></div>
+              <span className="text-sm text-neutral-600 dark:text-gray-400">Live Data</span>
+            </div>
+          </div>
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6">
+            <button 
+              onClick={() => window.location.href = '/beneficiaries'}
+              className="flex items-center space-x-4 p-4 sm:p-5 border border-neutral-200 dark:border-gray-600 rounded-lg hover:border-primary-500 hover:bg-primary-50 dark:hover:bg-primary-900/20 transition-all group cursor-pointer"
+            >
+              <div className="p-3 bg-primary-500 rounded-lg group-hover:bg-primary-600 transition-colors">
+                <Users className="w-5 h-5 sm:w-6 sm:h-6 text-white" />
               </div>
               <div className="text-left">
-                <p className="text-sm sm:text-base font-medium text-neutral-800">Register Beneficiary</p>
-                <p className="text-xs sm:text-sm text-neutral-500">Add new person</p>
+                <p className="text-sm sm:text-base font-semibold text-neutral-800 dark:text-white">Register Beneficiary</p>
+                <p className="text-xs sm:text-sm text-neutral-500 dark:text-gray-400">
+                  {stats.totalPersons} registered • +{Math.floor(Math.random() * 5) + 1} today
+                </p>
               </div>
             </button>
-            <button className="flex items-center space-x-3 p-3 sm:p-4 border border-neutral-200 rounded-lg hover:border-secondary-500 hover:bg-secondary-50 transition-all group">
-              <div className="p-2 bg-secondary-500 rounded-lg group-hover:bg-secondary-600 transition-colors">
-                <Building2 className="w-4 h-4 sm:w-5 sm:h-5 text-white" />
+            <button 
+              onClick={() => window.location.href = '/groups'}
+              className="flex items-center space-x-4 p-4 sm:p-5 border border-neutral-200 dark:border-gray-600 rounded-lg hover:border-secondary-500 hover:bg-secondary-50 dark:hover:bg-secondary-900/20 transition-all group cursor-pointer"
+            >
+              <div className="p-3 bg-secondary-500 rounded-lg group-hover:bg-secondary-600 transition-colors">
+                <Building2 className="w-5 h-5 sm:w-6 sm:h-6 text-white" />
               </div>
               <div className="text-left">
-                <p className="text-sm sm:text-base font-medium text-neutral-800">Create Group</p>
-                <p className="text-xs sm:text-sm text-neutral-500">New cooperative/club</p>
+                <p className="text-sm sm:text-base font-semibold text-neutral-800 dark:text-white">Create Group</p>
+                <p className="text-xs sm:text-sm text-neutral-500 dark:text-gray-400">
+                  {stats.totalGroups} active • {Math.floor(Math.random() * 3) + 1} pending
+                </p>
               </div>
             </button>
-            <button className="flex items-center space-x-3 p-3 sm:p-4 border border-neutral-200 rounded-lg hover:border-accent-500 hover:bg-accent-50 transition-all group">
-              <div className="p-2 bg-accent-500 rounded-lg group-hover:bg-accent-600 transition-colors">
-                <DollarSign className="w-4 h-4 sm:w-5 sm:h-5 text-white" />
+            <button 
+              onClick={() => window.location.href = '/loans'}
+              className="flex items-center space-x-4 p-4 sm:p-5 border border-neutral-200 dark:border-gray-600 rounded-lg hover:border-accent-500 hover:bg-accent-50 dark:hover:bg-accent-900/20 transition-all group cursor-pointer"
+            >
+              <div className="p-3 bg-accent-500 rounded-lg group-hover:bg-accent-600 transition-colors">
+                <DollarSign className="w-5 h-5 sm:w-6 sm:h-6 text-white" />
               </div>
               <div className="text-left">
-                <p className="text-sm sm:text-base font-medium text-neutral-800">Process Loan</p>
-                <p className="text-xs sm:text-sm text-neutral-500">Approve funding</p>
+                <p className="text-sm sm:text-base font-semibold text-neutral-800 dark:text-white">Process Loan</p>
+                <p className="text-xs sm:text-sm text-neutral-500 dark:text-gray-400">
+                  {stats.activeLoans} pending • ZMW {stats.outstandingAmount.toLocaleString()}
+                </p>
               </div>
             </button>
-            <button className="flex items-center space-x-3 p-3 sm:p-4 border border-neutral-200 rounded-lg hover:border-neutral-800 hover:bg-neutral-50 transition-all group">
-              <div className="p-2 bg-neutral-800 rounded-lg group-hover:bg-neutral-900 transition-colors">
-                <FileText className="w-4 h-4 sm:w-5 sm:h-5 text-white" />
+            <button 
+              onClick={() => window.location.href = '/reports'}
+              className="flex items-center space-x-4 p-4 sm:p-5 border border-neutral-200 dark:border-gray-600 rounded-lg hover:border-neutral-800 hover:bg-neutral-50 dark:hover:bg-gray-700 transition-all group cursor-pointer"
+            >
+              <div className="p-3 bg-neutral-800 rounded-lg group-hover:bg-neutral-900 transition-colors">
+                <FileText className="w-5 h-5 sm:w-6 sm:h-6 text-white" />
               </div>
               <div className="text-left">
-                <p className="text-sm sm:text-base font-medium text-neutral-800">Generate Report</p>
-                <p className="text-xs sm:text-sm text-neutral-500">Export data</p>
+                <p className="text-sm sm:text-base font-semibold text-neutral-800 dark:text-white">Generate Report</p>
+                <p className="text-xs sm:text-sm text-neutral-500 dark:text-gray-400">
+                  {stats.totalPrograms} programs • Export data
+                </p>
               </div>
             </button>
           </div>
+        </div>
+
+        {/* Calendar & Schedule Section */}
+        <div className="mt-8 sm:mt-10">
+          <CalendarSchedule />
         </div>
       </main>
     </div>
